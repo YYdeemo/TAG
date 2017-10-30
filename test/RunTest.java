@@ -6,7 +6,7 @@ import Finder.*;
 
 
 public class RunTest {
-	
+
 	public void run(Benchmark b) throws Exception
 	{
 		UnmatchedEP_Finder finder1;

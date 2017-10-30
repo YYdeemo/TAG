@@ -104,18 +104,22 @@ public class Benchmark {
 		send.add(process1);
 		send.add(process2);
 		
-		process0.add(new Recv(process0.getRank()+ "_" + 0, process0, 0,-1, 
+		//R(1,2)   S(0,2)    S(0,1)
+		//R(1,*)   S(0,1)    
+		//R(*,1) 
+		
+		process0.add(new Recv(process0.getRank()+ "_" + 0, process0, 0,1, 
+				0, null, true, null,2));
+		process0.add(new Recv(process0.getRank()+ "_" + 1, process0, 0,1, 
 				0, null, true, null,-1));
-			process0.add(new Send(process0.getRank() + "_" + 1, process1, 0, 0, 1, null, 2, 
-					true, null,2));
-			process1.add(new Recv(process1.getRank()+ "_" + 0, process0,0, -1, 
-					1, null, true, null,2));
-			process1.add(new Recv(process1.getRank()+ "_" + 1, process0, 1, 0, 
-					1, null, true, null,-1));
-			process2.add(new Send(process2.getRank() + "_" + 0, process1, 0,2, 0, null, 3, 
-					true, null,1));
-			process2.add(new Send(process2.getRank() + "_" + 1, process1,1, 2, 1, null, 4, 
-					true, null,2));
+		process0.add(new Recv(process0.getRank()+ "_" + 2, process0, 0,-1, 
+				0, null, true, null,1));
+		process1.add(new Send(process1.getRank() + "_" + 0, process1, 0,1, 0, null, 3, 
+				true, null,2));
+		process1.add(new Send(process1.getRank() + "_" + 1, process1, 0,1, 0, null, 3, 
+				true, null,1));
+		process2.add(new Send(process2.getRank() + "_" + 0, process1,1, 2, 0, null, 4, 
+				true, null,1));
 		/*process0.add(new Recv(process0.getRank() + "_" + 0, process0,0, 2, 
 				0, null, true, null,1));
 		process0.add(new Recv(process0.getRank() + "_" + 1, process0,1, -1, 

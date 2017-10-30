@@ -440,8 +440,7 @@ public class Encoder
 
 				//lasts HB send
 				for(Send lasts:listsfors){
-					if(lasts.dest == ((Send)op).dest 
-							&& lasts.tag == ((Send)op).tag ){
+					if(lasts.dest == ((Send)op).dest  ){
 						BoolExpr newexpr =solver.HB((IntExpr)operation_expr_map.get(lasts).getSecond(), 
 								time);
 						solver.addFormula(newexpr);

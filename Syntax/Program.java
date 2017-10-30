@@ -477,11 +477,12 @@ public class Program {
 	public void third_matchpair(){
 
 		ArrayList<Integer> Rtag = new ArrayList<>();
+		//the key is a pair<X,Y> X means tag,Y means the process's rank 
+		//the value is also a hashtable, the value is a linkedlist which has receivers(tag and endpoint is same and belong to same process),
+		//the key is endpoint of receives. 
 		Hashtable<Pair<Integer,Integer>,Hashtable<Integer,LinkedList<Recv>>> rlwithtag = new Hashtable<Pair<Integer,Integer>,Hashtable<Integer,LinkedList<Recv>>>();
-		//Hashtable<Pair<Integer,Integer>,LinkedList<Recv>> rlwithtag = new Hashtable<Pair<Integer,Integer>,LinkedList<Recv>>();
 		Hashtable<Pair<Integer,Integer>,Hashtable<Integer,LinkedList<Send>>> slwithtag = new Hashtable<Pair<Integer,Integer>,Hashtable<Integer,LinkedList<Send>>>();
-		//Hashtable<Pair<Integer,Integer>,LinkedList<Send>> slwithtag = new Hashtable<Pair<Integer,Integer>,LinkedList<Send>>();
-
+		
 		for(Process process: processes){
 			if(process.slist.isEmpty())
 				continue;
