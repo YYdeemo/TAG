@@ -1,0 +1,49 @@
+
+代码_主要内容：
+
+tag的修改内容：
+Recv 和 Send 中都有增加tag属性，除此之外规则的实现主要分为两个部分：
+1.match pair的生成，是在Syntax的program中withtag_matchpairs()方法实现
+2.约束条件的实现：
+	3种需要添加 TR‘<HB TR 规则的情况：
+		case 1:last R's tag = ANY and last R's src = R's src
+		case 2:last R's tag = ANY and last R's src = * 
+		case 3:last R's tag = ANY and R's tag = ANY 
+		case 4: last R's src = R's src != *
+		case 5: last R's src = * or R's src = *
+
+	需要添加 TR‘ <HB TS
+	if R'(last R) exist then TR‘ <HB TS
+
+	对于Send队列：
+	if S'（last S） exist and S''s dest = S's dest then TS' <HB TS
+	if S'（last S） exist and S''s dest = S's dest and S''s tag = S's tag then TS' <HB TS and MS' <HB MS
+
+
+除了以上规则的添加外，还在SMTsolver中添加了symbol：match，tag 并完善operation在SMT中的初始化和对应matchpair 的约束条件。
+
+Send mode的内容在以前的基础上，只做了修改，在SMTsolver中：Match_ss();Match_rs();
+
+collective communication
+
+	1.collective operations类创建在Syntax 中：Barrier,Broadcast,Rduece,Gather;ALLGather, ALLReduece
+	2.思路：
+	(1)统计program中collective operations的个数及类别-->collective_ops.class
+	(2)先将collective operations转换为Point-to-Point operations --> translate.class and A2ATranslate.class
+	(3)由program.class中的withtag_matchpair()实现转换后的R，S 和 原本的R，S 分别生成match pair 不交叉
+	(4)由最后生成的match-pairs作为输入，用SMTsolver验证其正确性
+
+collective_ops.class:统计program中所有的collective ops，用以区别只存在于个别processes中的colle_ops以及comm不同的同种colle_ops
+
+
+实验部分：(仅有关于TAG的Benchmark)
+
+EXPERIMENT(file)：
+	matchpairGen_Test:
+		MultiM  Pktuse  deadlock2K
+
+JAVA project：test2 package
+
+(运行的program不是很大 但是运行时间超过了2小时，但也可能是我电脑配置也比较低的原因)
+
+
